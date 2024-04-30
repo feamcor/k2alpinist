@@ -1,0 +1,108 @@
+{
+    "tags": [
+        "Create"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Insert Data To CRM",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "CRM",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "populateDbs"
+                                    },
+                                    {
+                                        "const": "CRM_DB",
+                                        "name": "interface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.interface",
+                                            "interfaceType": [
+                                                "database",
+                                                "CassandraLoader"
+                                            ],
+                                            "interfaces": [
+                                                "fabric"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "crm.sql.gz",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Insert Data To Billing",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "BILLING",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "populateDbs"
+                                    },
+                                    {
+                                        "const": "BILLING_DB",
+                                        "name": "interface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.interface",
+                                            "interfaceType": [
+                                                "database",
+                                                "CassandraLoader"
+                                            ],
+                                            "interfaces": [
+                                                "fabric"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "billing.sql.gz",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": []
+}

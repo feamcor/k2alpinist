@@ -1,0 +1,82 @@
+{
+    "tags": [
+        "Create"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Create DBS & Roles",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ErrorHandler1",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": ""
+                                                },
+                                                "actions": {
+                                                    "suppress": false,
+                                                    "log": false,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "createRolesAndDbs",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "createRolesAndDbs"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create SRC Schema",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "createSRCDbs",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "createSRCDbs"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": []
+}
