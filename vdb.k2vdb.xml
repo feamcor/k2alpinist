@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VirtualDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="">
+  <Name>vdb</Name>
+  <RootView>CUSTOMER</RootView>
+  <CacheLocationType>Default</CacheLocationType>
+  <EnableDataEncryption>false</EnableDataEncryption>
+  <LuLazyDataUpdate syncMethod="None" performEvery="1.00:00:00" syncTimeout="0">
+  	<DecisionFunction></DecisionFunction>
+  </LuLazyDataUpdate>
+  <DeleteEntityIfNotExists>false</DeleteEntityIfNotExists>
+  <EventsList>
+  </EventsList>
+  <IidFinderProp enabled="true">
+    <DbInterface></DbInterface>
+    <SourceSchema></SourceSchema>
+    <DeleteInstance>false</DeleteInstance>
+    <NumberOfPartitions>100</NumberOfPartitions>
+    <NumberOfJobs>50</NumberOfJobs>
+    <OrderValidationTime>00:05:00</OrderValidationTime>
+    <HistoryStoreTime>7.00:00:00</HistoryStoreTime>
+    <DeltaSyncMethod>TimeInterval</DeltaSyncMethod>
+    <DeltaSyncTimeInterval>00:00:00</DeltaSyncTimeInterval>
+  </IidFinderProp>
+  <Tables>
+	 <Table>ACTIVITY</Table>
+	 <Table>ADDRESS</Table>
+	 <Table>Asset_Sampling</Table>
+	 <Table>Asset_Transaction</Table>
+	 <Table>BALANCE</Table>
+	 <Table>CASE_NOTE</Table>
+	 <Table>CASES</Table>
+	 <Table>CONTRACT</Table>
+	 <Table>CUSTOMER</Table>
+	 <Table>INVOICE</Table>
+	 <Table>PAYMENT</Table>
+	 <Table>PAYMENT_METHODS</Table>
+	 <Table>RECOMMENDATIONS</Table>
+	 <Table>SCORE</Table>
+	 <Table>SUBSCRIBER</Table>
+  </Tables>
+  <TablesProperties>
+	 <TableProperties name="ACTIVITY">
+      <Populations>
+        <Population name="population.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="ADDRESS">
+      <Populations>
+        <Population name="population.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="Asset_Sampling">
+      <Populations>
+        <Population name="population.flow" order="5" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="Asset_Transaction">
+      <Populations>
+        <Population name="population.flow" order="4" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="BALANCE">
+      <Populations>
+        <Population name="population.flow" order="4" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="CASE_NOTE">
+      <Populations>
+        <Population name="population.flow" order="4" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="CASES">
+      <Populations>
+        <Population name="population.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="CONTRACT">
+      <Populations>
+        <Population name="population.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="CUSTOMER">
+      <Populations>
+        <Population name="population.flow" order="1" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="INVOICE">
+      <Populations>
+        <Population name="population.flow" order="4" disabled="false" populationType="Flow" />
+        <Population name="pop_add_7_days.flow" order="4" disabled="true" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="PAYMENT">
+      <Populations>
+        <Population name="population.flow" order="5" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="PAYMENT_METHODS">
+      <Populations>
+        <Population name="population.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="RECOMMENDATIONS">
+      <Populations>
+        <Population name="population.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="SCORE">
+      <Populations>
+        <Population name="population.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="SUBSCRIBER">
+      <Populations>
+        <Population name="population.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+  </TablesProperties>
+  <EnrichmentsOrderList>
+  </EnrichmentsOrderList>
+  <ReferencesList>
+	  <Item active="true" name="ref_Asset" />
+	  <Item active="true" name="ref_Asset_Stations" />
+	  <Item active="true" name="ref_Asset_Type" />
+  </ReferencesList>
+  <Relations />
+  <DatabaseRelations>
+	  <Relation>
+        <From tableType="TableObject" table="SUBSCRIBER" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+        <To tableType="TableObject" table="Asset_Transaction" populationObjectName="population.flow" column="Subscriber_ID" columnId="Subscriber_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="RECOMMENDATIONS" populationObjectName="population.flow" column="Customer_ID" columnId="Customer_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="SUBSCRIBER" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+        <To tableType="TableObject" table="BALANCE" populationObjectName="population.flow" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="SUBSCRIBER" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+        <To tableType="TableObject" table="INVOICE" populationObjectName="population.flow" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="INVOICE" column="INVOICE_ID" columnId="INVOICE_ID" />
+        <To tableType="TableObject" table="PAYMENT" populationObjectName="population.flow" column="INVOICE_ID" columnId="INVOICE_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="Asset_Transaction" column="Transaction_ID" columnId="Transaction_ID" />
+        <To tableType="TableObject" table="Asset_Sampling" populationObjectName="population.flow" column="Transaction_ID" columnId="Transaction_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="ACTIVITY" column="ACTIVITY_ID" columnId="ACTIVITY_ID" />
+        <To tableType="TableObject" table="CASES" populationObjectName="population.flow" column="ACTIVITY_ID" columnId="ACTIVITY_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CASES" column="CASE_ID" columnId="CASE_ID" />
+        <To tableType="TableObject" table="CASE_NOTE" populationObjectName="population.flow" column="CASE_ID" columnId="CASE_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="ACTIVITY" populationObjectName="population.flow" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="ADDRESS" populationObjectName="population.flow" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="SCORE" populationObjectName="population.flow" column="Customer_ID" columnId="Customer_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="CONTRACT" populationObjectName="population.flow" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="PAYMENT_METHODS" populationObjectName="population.flow" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CONTRACT" column="CONTRACT_ID" columnId="CONTRACT_ID" />
+        <To tableType="TableObject" table="SUBSCRIBER" populationObjectName="population.flow" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="SUBSCRIBER" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+        <To tableType="TableObject" table="INVOICE" populationObjectName="pop_add_7_days.flow" column="SUBSCRIBER_ID" columnId="SUBSCRIBER_ID" />
+      </Relation>
+  </DatabaseRelations>
+  <DiagramGraph>
+    <Graph name="vdb.k2vdb.xml">
+      <Node name="ACTIVITY" pos="409 295" viewType="Table" />
+      <Node name="ADDRESS" pos="803 540" viewType="Table" />
+      <Node name="Asset_Sampling" pos="1262 711" viewType="Table" />
+      <Node name="Asset_Transaction" pos="976 761" viewType="Table" />
+      <Node name="BALANCE" pos="976 986" viewType="Table" />
+      <Node name="CASE_NOTE" pos="983 293" viewType="Table" />
+      <Node name="CASES" pos="690 293" viewType="Table" />
+      <Node name="CONTRACT" pos="405 986" viewType="Table" />
+      <Node name="CUSTOMER" pos="120 636" viewType="Table" />
+      <Node name="INVOICE" pos="976 1211" viewType="Table" />
+      <Node name="PAYMENT" pos="1262 1261" viewType="Table" />
+      <Node name="PAYMENT_METHODS" pos="405 1211" viewType="Table" />
+      <Node name="RECOMMENDATIONS" pos="404 108" viewType="Table" />
+      <Node name="SCORE" pos="448 535" viewType="Table" />
+      <Node name="SUBSCRIBER" pos="691 986" viewType="Table" />
+      <Group name="CRM" pos="405 99" expanded="true">
+        <Node name="CONTRACT" pos="634 709" viewType="Table" />
+        <Node name="CUSTOMER" pos="532 328" viewType="Table" />
+        <Group name="CRM Details" pos="823 134" expanded="true">
+          <Node name="ACTIVITY" pos="950 701" viewType="Table" />
+          <Node name="ADDRESS" pos="1062 226" viewType="Table" />
+          <Node name="CASE_NOTE" pos="1607 748" viewType="Table" />
+          <Node name="CASES" pos="1278 724" viewType="Table" />
+          <Node name="PAYMENT_METHODS" pos="1398 434" viewType="Table" />
+          <Node name="RECOMMENDATIONS" pos="957 494" viewType="Table" />
+          <Node name="SCORE" pos="1397 227" viewType="Table" />
+        </Group>
+      </Group>
+      <Group name="BILLING" pos="902 908" expanded="true">
+        <Node name="BALANCE" pos="1697 1277" viewType="Table" />
+        <Node name="INVOICE" pos="1362 1014" viewType="Table" />
+        <Node name="PAYMENT" pos="1699 1041" viewType="Table" />
+        <Node name="SUBSCRIBER" pos="1029 1302" viewType="Table" />
+      </Group>
+      <Group name="ASSET" pos="1600 1504" expanded="true">
+        <Node name="Asset_Sampling" pos="2049 1596" viewType="Table" />
+        <Node name="Asset_Transaction" pos="1727 1597" viewType="Table" />
+      </Group>
+    </Graph>
+  </DiagramGraph>
+</VirtualDB>

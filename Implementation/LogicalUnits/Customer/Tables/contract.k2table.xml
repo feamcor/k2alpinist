@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>contract</Name>
+  <ID>tbl_contract</ID>
+  <Columns>
+    <Column name="customer_id" id="customer_id" index="0" datatype="INTEGER" />
+    <Column name="contract_id" id="contract_id" index="1" datatype="INTEGER" mandatory="true" />
+    <Column name="contract_ref_id" id="contract_ref_id" index="2" datatype="INTEGER" />
+    <Column name="associated_line" id="associated_line" index="3" datatype="TEXT" />
+    <Column name="contract_description" id="contract_description" index="4" datatype="TEXT" />
+    <Column name="from_date" id="from_date" index="5" datatype="DATETIME" />
+    <Column name="to_date" id="to_date" index="6" datatype="DATETIME" />
+    <Column name="associated_line_fmt" id="associated_line_fmt" index="7" datatype="TEXT" />
+  </Columns>
+  <IndexesList>
+    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="contract_id" />
+  </IndexesList>
+  <EnrichmentList>
+  </EnrichmentList>
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <DecisionFunction></DecisionFunction>
+  </LazyDataUpdate>
+  <TriggersList>
+  </TriggersList>
+  <BasedOn>
+    <Source interface="CRM_DB" schema="public" table="contract" timestamp="2024-05-06">
+      <ColumnsList>customer_id,contract_id,contract_ref_id,associated_line,contract_description,from_date,to_date,associated_line_fmt</ColumnsList>
+    </Source>
+  </BasedOn>
+</TableObject>

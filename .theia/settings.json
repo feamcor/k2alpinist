@@ -30,7 +30,11 @@
     "java.project.outputPath": ".studioWeb/java/bin",
     "java.project.sourcePaths": [
 		"Implementation/SharedObjects/Java/src",	
+		"Implementation/LogicalUnits/Customer/Java/src",	
+		"Implementation/LogicalUnits/IidFinder/Java/src",	
+		"Implementation/LogicalUnits/Templates/Java/src",	
 		"Implementation/LogicalUnits/k2_ref/Java/src",	
+		"Implementation/LogicalUnits/Jobs/Java/src",	
 		"Implementation/LogicalUnits/k2_ws/Java/src"	
 	],
 	"java.project.resourceFilters": [
