@@ -24,7 +24,7 @@
             <Value></Value>
         </Property>
         <Property name="Token">
-            <Value></Value>
+            <Value>${secretmanager:openai_completions.Token}</Value>
         </Property>
         <Property name="AccessTokenUrl">
             <Value></Value>
