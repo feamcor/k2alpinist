@@ -228,31 +228,41 @@
                                 "inputs": [
                                     {
                                         "name": "format",
-                                        "const": "Return the string \"true\" if ${ZIP} is the zip code of the following address: street name \"${STREET_ADDRESS_1}\", city \"${CITY}\", state \"${STATE}\", and country \"${COUNTRY}\". Otherwise, return string \"false\"."
+                                        "const": "Return true if ${ZIP} is the zip code of the address ${STREET_ADDRESS_1}, ${CITY}, ${STATE}, ${COUNTRY}. Otherwise, return false."
                                     },
                                     {
                                         "name": "ZIP",
-                                        "schema": {},
+                                        "schema": {
+                                            "type": "string"
+                                        },
                                         "mandatory": false
                                     },
                                     {
                                         "name": "STREET_ADDRESS_1",
-                                        "schema": {},
+                                        "schema": {
+                                            "type": "string"
+                                        },
                                         "mandatory": false
                                     },
                                     {
                                         "name": "CITY",
-                                        "schema": {},
+                                        "schema": {
+                                            "type": "string"
+                                        },
                                         "mandatory": false
                                     },
                                     {
                                         "name": "STATE",
-                                        "schema": {},
+                                        "schema": {
+                                            "type": "string"
+                                        },
                                         "mandatory": false
                                     },
                                     {
                                         "name": "COUNTRY",
-                                        "schema": {},
+                                        "schema": {
+                                            "type": "string"
+                                        },
                                         "mandatory": false
                                     }
                                 ],
@@ -356,7 +366,140 @@
                                         "mandatory": false
                                     }
                                 ],
-                                "outputs": []
+                                "outputs": [
+                                    {
+                                        "name": "header",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "access-control-allow-origin": {
+                                                    "type": "string"
+                                                },
+                                                "alt-svc": {
+                                                    "type": "string"
+                                                },
+                                                "cache-control": {
+                                                    "type": "string"
+                                                },
+                                                "cf-cache-status": {
+                                                    "type": "string"
+                                                },
+                                                "cf-ray": {
+                                                    "type": "string"
+                                                },
+                                                "connection": {
+                                                    "type": "string"
+                                                },
+                                                "Content-Length": {
+                                                    "type": "integer"
+                                                },
+                                                "content-type": {
+                                                    "type": "string"
+                                                },
+                                                "Date": {
+                                                    "type": "date"
+                                                },
+                                                "openai-model": {
+                                                    "type": "string"
+                                                },
+                                                "openai-organization": {
+                                                    "type": "string"
+                                                },
+                                                "openai-processing-ms": {
+                                                    "type": "string"
+                                                },
+                                                "openai-version": {
+                                                    "type": "string"
+                                                },
+                                                "server": {
+                                                    "type": "string"
+                                                },
+                                                "set-cookie": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "strict-transport-security": {
+                                                    "type": "string"
+                                                },
+                                                "x-ratelimit-limit-requests": {
+                                                    "type": "string"
+                                                },
+                                                "x-ratelimit-limit-tokens": {
+                                                    "type": "string"
+                                                },
+                                                "x-ratelimit-remaining-requests": {
+                                                    "type": "string"
+                                                },
+                                                "x-ratelimit-remaining-tokens": {
+                                                    "type": "string"
+                                                },
+                                                "x-ratelimit-reset-requests": {
+                                                    "type": "string"
+                                                },
+                                                "x-ratelimit-reset-tokens": {
+                                                    "type": "string"
+                                                },
+                                                "x-request-id": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "object": {
+                                                    "type": "string"
+                                                },
+                                                "created": {
+                                                    "type": "integer"
+                                                },
+                                                "model": {
+                                                    "type": "string"
+                                                },
+                                                "choices": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "text": {
+                                                                "type": "string"
+                                                            },
+                                                            "index": {
+                                                                "type": "integer"
+                                                            },
+                                                            "logprobs": {},
+                                                            "finish_reason": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "usage": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "prompt_tokens": {
+                                                            "type": "integer"
+                                                        },
+                                                        "completion_tokens": {
+                                                            "type": "integer"
+                                                        },
+                                                        "total_tokens": {
+                                                            "type": "integer"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ]
@@ -379,7 +522,7 @@
                                 "inputs": [
                                     {
                                         "name": "script",
-                                        "const": "response === \"true\""
+                                        "const": "response.toLowerCase() === \"true\""
                                     },
                                     {
                                         "name": "response",
@@ -408,7 +551,7 @@
                 {
                     "name": "Rollback Sync",
                     "dependsOnList": [],
-                    "isLast": 1,
+                    "isLast": 0,
                     "isTransactional": true,
                     "actors": [
                         {
@@ -436,27 +579,8 @@
                                 ],
                                 "outputs": []
                             }
-                        },
-                        {
-                            "name": "Stop",
-                            "actorType": {
-                                "parentType": "LoopStop",
-                                "inputs": [],
-                                "outputs": []
-                            }
                         }
                     ]
-                }
-            ]
-        },
-        {
-            "stages": [
-                {
-                    "name": "End Flow",
-                    "dependsOnList": [],
-                    "isLast": 0,
-                    "isTransactional": false,
-                    "actors": []
                 }
             ]
         }
@@ -521,7 +645,7 @@
                 "actor": "Prompt",
                 "name": "params"
             },
-            "iterate": "Iterate"
+            "iterate": "First"
         },
         {
             "leftPort": {
@@ -542,6 +666,21 @@
                 "actor": "Call API",
                 "name": "payload"
             }
+        },
+        {
+            "leftPort": {
+                "actor": "Call API",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "API Result",
+                "name": "response"
+            },
+            "iterate": "First",
+            "path": [
+                "choices",
+                "text"
+            ]
         },
         {
             "leftPort": {
