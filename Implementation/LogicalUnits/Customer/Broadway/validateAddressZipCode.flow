@@ -260,16 +260,16 @@
                                 "parentType": "MapCreate",
                                 "inputs": [
                                     {
-                                        "name": "role",
                                         "const": "system",
+                                        "name": "role",
                                         "schema": {
                                             "type": "string"
                                         },
                                         "mandatory": false
                                     },
                                     {
-                                        "name": "content",
                                         "const": "You are an assistant expert on addresses.",
+                                        "name": "content",
                                         "schema": {
                                             "type": "string"
                                         },
@@ -300,8 +300,8 @@
                                 "parentType": "MapCreate",
                                 "inputs": [
                                     {
-                                        "name": "role",
                                         "const": "user",
+                                        "name": "role",
                                         "schema": {
                                             "type": "string"
                                         },
@@ -347,7 +347,7 @@
                     "actors": [
                         {
                             "name": "Payload",
-                            "minHeight": 257,
+                            "minHeight": 238,
                             "actorType": {
                                 "parentType": "MapCreate",
                                 "inputs": [
@@ -366,17 +366,10 @@
                                         "mandatory": false
                                     },
                                     {
-                                        "name": "temperature",
                                         "const": 0,
+                                        "name": "temperature",
                                         "schema": {
                                             "type": "number"
-                                        },
-                                        "mandatory": false
-                                    },
-                                    {
-                                        "name": "prompt",
-                                        "schema": {
-                                            "type": "string"
                                         },
                                         "mandatory": false
                                     },
@@ -391,18 +384,18 @@
                                         "mandatory": false
                                     },
                                     {
-                                        "name": "n",
                                         "const": 1,
+                                        "name": "n",
                                         "schema": {
                                             "type": "integer"
                                         },
                                         "mandatory": false
                                     },
                                     {
-                                        "name": "response_format",
                                         "const": {
                                             "type": "text"
                                         },
+                                        "name": "response_format",
                                         "schema": {
                                             "type": "object"
                                         },
