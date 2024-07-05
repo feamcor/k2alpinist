@@ -41,7 +41,7 @@
                                         "schema": {
                                             "type": "string"
                                         },
-                                        "const": "gpt-3.5-turbo-instruct",
+                                        "const": "gpt-4-turbo",
                                         "isDefault": true
                                     }
                                 ],
@@ -78,30 +78,6 @@
                                     }
                                 ]
                             }
-                        },
-                        {
-                            "name": "Temperature",
-                            "actorType": {
-                                "parentType": "Const",
-                                "inputs": [
-                                    {
-                                        "name": "value",
-                                        "schema": {
-                                            "type": "number"
-                                        },
-                                        "const": 0,
-                                        "isDefault": true
-                                    }
-                                ],
-                                "outputs": [
-                                    {
-                                        "name": "value",
-                                        "schema": {
-                                            "type": "number"
-                                        }
-                                    }
-                                ]
-                            }
                         }
                     ]
                 }
@@ -110,7 +86,7 @@
         {
             "stages": [
                 {
-                    "name": "Get Customer Address",
+                    "name": "Get Customer",
                     "dependsOnList": [],
                     "isLast": 0,
                     "isTransactional": true,
@@ -147,7 +123,7 @@
                             }
                         },
                         {
-                            "name": "Get LUI",
+                            "name": "LUI",
                             "actorType": {
                                 "parentType": "FabricGet",
                                 "inputs": [
@@ -162,10 +138,21 @@
                                 ],
                                 "outputs": []
                             }
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Get Addresses",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": true,
+                    "actors": [
                         {
-                            "name": "Get Addresses",
-                            "minHeight": 277,
+                            "name": "Addresses",
                             "actorType": {
                                 "parentType": "DbCommand",
                                 "inputs": [
@@ -215,54 +202,39 @@
         {
             "stages": [
                 {
-                    "name": "Build AI Prompt",
+                    "name": "Build Prompt",
                     "dependsOnList": [],
                     "isLast": 0,
                     "isTransactional": true,
                     "actors": [
                         {
                             "name": "Prompt",
-                            "minHeight": 492,
+                            "minHeight": 407,
                             "actorType": {
                                 "parentType": "StringFormat",
                                 "inputs": [
                                     {
                                         "name": "format",
-                                        "const": "Return true if ${ZIP} is the zip code of the address ${STREET_ADDRESS_1}, ${CITY}, ${STATE}, ${COUNTRY}. Otherwise, return false."
-                                    },
-                                    {
-                                        "name": "ZIP",
-                                        "schema": {
-                                            "type": "string"
-                                        },
-                                        "mandatory": false
+                                        "const": "What is the zip code of the address '${STREET_ADDRESS_1}, ${CITY}, ${STATE}, ${COUNTRY}'. Reply only with the zip code number, nothing else."
                                     },
                                     {
                                         "name": "STREET_ADDRESS_1",
-                                        "schema": {
-                                            "type": "string"
-                                        },
+                                        "schema": {},
                                         "mandatory": false
                                     },
                                     {
                                         "name": "CITY",
-                                        "schema": {
-                                            "type": "string"
-                                        },
+                                        "schema": {},
                                         "mandatory": false
                                     },
                                     {
                                         "name": "STATE",
-                                        "schema": {
-                                            "type": "string"
-                                        },
+                                        "schema": {},
                                         "mandatory": false
                                     },
                                     {
                                         "name": "COUNTRY",
-                                        "schema": {
-                                            "type": "string"
-                                        },
+                                        "schema": {},
                                         "mandatory": false
                                     }
                                 ],
@@ -276,7 +248,99 @@
         {
             "stages": [
                 {
-                    "name": "Build API Payload",
+                    "name": "Build Messages",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": true,
+                    "actors": [
+                        {
+                            "name": "System Message",
+                            "minHeight": 252,
+                            "actorType": {
+                                "parentType": "MapCreate",
+                                "inputs": [
+                                    {
+                                        "name": "role",
+                                        "const": "system",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "content",
+                                        "const": "You are an assistant expert on addresses.",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "role": {
+                                                    "type": "string"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "User Message",
+                            "actorType": {
+                                "parentType": "MapCreate",
+                                "inputs": [
+                                    {
+                                        "name": "role",
+                                        "const": "user",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "content",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "role": {
+                                                    "type": "string"
+                                                },
+                                                "content": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Build Payload",
                     "dependsOnList": [],
                     "isLast": 0,
                     "isTransactional": true,
@@ -303,6 +367,7 @@
                                     },
                                     {
                                         "name": "temperature",
+                                        "const": 0,
                                         "schema": {
                                             "type": "number"
                                         },
@@ -314,6 +379,34 @@
                                             "type": "string"
                                         },
                                         "mandatory": false
+                                    },
+                                    {
+                                        "name": "messages",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "n",
+                                        "const": 1,
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "response_format",
+                                        "const": {
+                                            "type": "text"
+                                        },
+                                        "schema": {
+                                            "type": "object"
+                                        },
+                                        "mandatory": false
                                     }
                                 ],
                                 "outputs": [
@@ -322,17 +415,34 @@
                                         "schema": {
                                             "type": "object",
                                             "properties": {
+                                                "temperature": {
+                                                    "type": "integer"
+                                                },
+                                                "n": {
+                                                    "type": "integer"
+                                                },
+                                                "response_format": {
+                                                    "type": "string"
+                                                },
                                                 "model": {
                                                     "type": "string"
                                                 },
                                                 "max_tokens": {
                                                     "type": "integer"
                                                 },
-                                                "temperature": {
-                                                    "type": "integer"
-                                                },
-                                                "prompt": {
-                                                    "type": "string"
+                                                "messages": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "role": {
+                                                                "type": "string"
+                                                            },
+                                                            "content": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -347,13 +457,14 @@
         {
             "stages": [
                 {
-                    "name": "Call AI API",
+                    "name": "Call API",
                     "dependsOnList": [],
                     "isLast": 0,
                     "isTransactional": true,
                     "actors": [
                         {
-                            "name": "Call API",
+                            "name": "API",
+                            "minHeight": 193,
                             "actorType": {
                                 "parentType": "HttpJson",
                                 "inputs": [
@@ -372,13 +483,7 @@
                                         "schema": {
                                             "type": "object",
                                             "properties": {
-                                                "access-control-allow-origin": {
-                                                    "type": "string"
-                                                },
                                                 "alt-svc": {
-                                                    "type": "string"
-                                                },
-                                                "cache-control": {
                                                     "type": "string"
                                                 },
                                                 "cf-cache-status": {
@@ -390,17 +495,11 @@
                                                 "connection": {
                                                     "type": "string"
                                                 },
-                                                "Content-Length": {
-                                                    "type": "integer"
-                                                },
                                                 "content-type": {
                                                     "type": "string"
                                                 },
                                                 "Date": {
                                                     "type": "date"
-                                                },
-                                                "openai-model": {
-                                                    "type": "string"
                                                 },
                                                 "openai-organization": {
                                                     "type": "string"
@@ -421,6 +520,9 @@
                                                     }
                                                 },
                                                 "strict-transport-security": {
+                                                    "type": "string"
+                                                },
+                                                "transfer-encoding": {
                                                     "type": "string"
                                                 },
                                                 "x-ratelimit-limit-requests": {
@@ -469,11 +571,19 @@
                                                     "items": {
                                                         "type": "object",
                                                         "properties": {
-                                                            "text": {
-                                                                "type": "string"
-                                                            },
                                                             "index": {
                                                                 "type": "integer"
+                                                            },
+                                                            "message": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "role": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "content": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
                                                             },
                                                             "logprobs": {},
                                                             "finish_reason": {
@@ -495,6 +605,9 @@
                                                             "type": "integer"
                                                         }
                                                     }
+                                                },
+                                                "system_fingerprint": {
+                                                    "type": "string"
                                                 }
                                             }
                                         }
@@ -509,23 +622,29 @@
         {
             "stages": [
                 {
-                    "name": "Parse API Result",
+                    "name": "Parse Result",
                     "dependsOnList": [],
                     "isLast": 0,
                     "isTransactional": true,
                     "actors": [
                         {
-                            "name": "API Result",
-                            "minHeight": 109,
+                            "name": "Result",
                             "actorType": {
                                 "parentType": "JavaScript",
                                 "inputs": [
                                     {
                                         "name": "script",
-                                        "const": "response.toLowerCase() === \"true\""
+                                        "const": "content.trim() === ZIP.trim()"
                                     },
                                     {
-                                        "name": "response",
+                                        "name": "ZIP",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "content",
                                         "schema": {
                                             "type": "string"
                                         },
@@ -550,8 +669,10 @@
             "stages": [
                 {
                     "name": "Rollback Sync",
-                    "dependsOnList": [],
-                    "isLast": 0,
+                    "dependsOnList": [
+                        "Parse Result"
+                    ],
+                    "isLast": 1,
                     "isTransactional": true,
                     "actors": [
                         {
@@ -579,8 +700,26 @@
                                 ],
                                 "outputs": []
                             }
+                        },
+                        {
+                            "name": "Stop Loop",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
                         }
                     ]
+                },
+                {
+                    "name": "Zip is Ok",
+                    "dependsOnList": [
+                        "Parse Result"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": true,
+                    "hasElse": true,
+                    "actors": []
                 }
             ]
         }
@@ -602,7 +741,7 @@
                 "name": "value"
             },
             "rightPort": {
-                "actor": "Get LUI",
+                "actor": "LUI",
                 "name": "iid"
             }
         },
@@ -628,24 +767,28 @@
         },
         {
             "leftPort": {
-                "actor": "Temperature",
-                "name": "value"
-            },
-            "rightPort": {
-                "actor": "Payload",
-                "name": "temperature"
-            }
-        },
-        {
-            "leftPort": {
-                "actor": "Get Addresses",
+                "actor": "Addresses",
                 "name": "result"
             },
             "rightPort": {
                 "actor": "Prompt",
                 "name": "params"
             },
-            "iterate": "First"
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Addresses",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Result",
+                "name": "ZIP"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "ZIP"
+            ]
         },
         {
             "leftPort": {
@@ -653,9 +796,31 @@
                 "name": "string"
             },
             "rightPort": {
-                "actor": "Payload",
-                "name": "prompt"
+                "actor": "User Message",
+                "name": "content"
             }
+        },
+        {
+            "leftPort": {
+                "actor": "System Message",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "Payload",
+                "name": "messages"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "User Message",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "Payload",
+                "name": "messages"
+            },
+            "arrayPosition": 1
         },
         {
             "leftPort": {
@@ -663,28 +828,29 @@
                 "name": "map"
             },
             "rightPort": {
-                "actor": "Call API",
+                "actor": "API",
                 "name": "payload"
             }
         },
         {
             "leftPort": {
-                "actor": "Call API",
+                "actor": "API",
                 "name": "result"
             },
             "rightPort": {
-                "actor": "API Result",
-                "name": "response"
+                "actor": "Result",
+                "name": "content"
             },
             "iterate": "First",
             "path": [
                 "choices",
-                "text"
+                "message",
+                "content"
             ]
         },
         {
             "leftPort": {
-                "actor": "API Result",
+                "actor": "Result",
                 "name": "result"
             },
             "rightPort": {
@@ -719,16 +885,6 @@
             },
             "rightPort": {
                 "actor": "Max Tokens",
-                "name": "value"
-            }
-        },
-        {
-            "leftPort": {
-                "actor": "flowArgs",
-                "name": "api_temperature"
-            },
-            "rightPort": {
-                "actor": "Temperature",
                 "name": "value"
             }
         }
