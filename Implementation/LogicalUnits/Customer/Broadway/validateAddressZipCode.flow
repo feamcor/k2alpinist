@@ -78,6 +78,30 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "name": "Sync Mode",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "ON",
+                                        "isDefault": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }
@@ -133,7 +157,7 @@
                                     },
                                     {
                                         "name": "syncMode",
-                                        "const": "ON"
+                                        "const": null
                                     }
                                 ],
                                 "outputs": []
@@ -151,6 +175,34 @@
                     "isLast": 0,
                     "isTransactional": true,
                     "actors": [
+                        {
+                            "name": "LUI Was Synchronized",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "action !== null && action !== undefined && action.trim() !== \"\" && (action === \"ADD\" || action === \"UPDATE\");"
+                                    },
+                                    {
+                                        "name": "action",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
                         {
                             "name": "Addresses",
                             "actorType": {
@@ -661,7 +713,7 @@
         {
             "stages": [
                 {
-                    "name": "Rollback Sync",
+                    "name": "Zip is Not OK",
                     "dependsOnList": [
                         "Parse Result"
                     ],
@@ -669,7 +721,7 @@
                     "isTransactional": true,
                     "actors": [
                         {
-                            "name": "Is Not Valid Zip",
+                            "name": "Is Not Valid Zip 1",
                             "condition": "result",
                             "actorType": {
                                 "parentType": "Not",
@@ -705,7 +757,7 @@
                     ]
                 },
                 {
-                    "name": "Zip is Ok",
+                    "name": "Zip is OK",
                     "dependsOnList": [
                         "Parse Result"
                     ],
@@ -757,6 +809,30 @@
                 "actor": "Payload",
                 "name": "max_tokens"
             }
+        },
+        {
+            "leftPort": {
+                "actor": "Sync Mode",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LUI",
+                "name": "syncMode"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LUI",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LUI Was Synchronized",
+                "name": "action"
+            },
+            "iterate": "First",
+            "path": [
+                "action"
+            ]
         },
         {
             "leftPort": {
@@ -847,7 +923,7 @@
                 "name": "result"
             },
             "rightPort": {
-                "actor": "Is Not Valid Zip",
+                "actor": "Is Not Valid Zip 1",
                 "name": "value"
             }
         },
@@ -878,6 +954,16 @@
             },
             "rightPort": {
                 "actor": "Max Tokens",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lui_sync_mode"
+            },
+            "rightPort": {
+                "actor": "Sync Mode",
                 "name": "value"
             }
         }
