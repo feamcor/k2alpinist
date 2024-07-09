@@ -111,9 +111,11 @@
             "stages": [
                 {
                     "name": "Get Customer",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Input Parameters"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "Check IID",
@@ -147,7 +149,25 @@
                             }
                         },
                         {
+                            "name": "Begin Sync Trx",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "begin"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
                             "name": "LUI",
+                            "minHeight": 201,
                             "actorType": {
                                 "parentType": "FabricGet",
                                 "inputs": [
@@ -164,6 +184,16 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Invalid IID",
+                    "dependsOnList": [
+                        "Input Parameters"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
                 }
             ]
         },
@@ -171,9 +201,11 @@
             "stages": [
                 {
                     "name": "Get Addresses",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Get Customer"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "LUI Was Synchronized",
@@ -248,6 +280,43 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LUI Not Synchronized",
+                    "dependsOnList": [
+                        "Get Customer"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "Rollback Sync Trx 2",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "rollback"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Invalid IID 1",
+                    "dependsOnList": [
+                        "Invalid IID"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
                 }
             ]
         },
@@ -255,9 +324,11 @@
             "stages": [
                 {
                     "name": "Build Prompt",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Get Addresses"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "Prompt",
@@ -294,6 +365,24 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LUI Not Synchronized 1",
+                    "dependsOnList": [
+                        "LUI Not Synchronized"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 2",
+                    "dependsOnList": [
+                        "Invalid IID 1"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
                 }
             ]
         },
@@ -301,9 +390,11 @@
             "stages": [
                 {
                     "name": "Build Messages",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Build Prompt"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "System Message",
@@ -386,6 +477,24 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LUI Not Synchronized 2",
+                    "dependsOnList": [
+                        "LUI Not Synchronized 1"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 3",
+                    "dependsOnList": [
+                        "Invalid IID 2"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
                 }
             ]
         },
@@ -393,9 +502,11 @@
             "stages": [
                 {
                     "name": "Build Payload",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Build Messages"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "Payload",
@@ -496,6 +607,24 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LUI Not Synchronized 3",
+                    "dependsOnList": [
+                        "LUI Not Synchronized 2"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 4",
+                    "dependsOnList": [
+                        "Invalid IID 3"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
                 }
             ]
         },
@@ -503,9 +632,11 @@
             "stages": [
                 {
                     "name": "Call API",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Build Payload"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "API",
@@ -661,6 +792,24 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LUI Not Synchronized 4",
+                    "dependsOnList": [
+                        "LUI Not Synchronized 3"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 5",
+                    "dependsOnList": [
+                        "Invalid IID 4"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
                 }
             ]
         },
@@ -668,9 +817,11 @@
             "stages": [
                 {
                     "name": "Parse Result",
-                    "dependsOnList": [],
+                    "dependsOnList": [
+                        "Call API"
+                    ],
                     "isLast": 0,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
                             "name": "Result",
@@ -707,21 +858,39 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "LUI Not Synchronized 5",
+                    "dependsOnList": [
+                        "LUI Not Synchronized 4"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 6",
+                    "dependsOnList": [
+                        "Invalid IID 5"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
                 }
             ]
         },
         {
             "stages": [
                 {
-                    "name": "Zip is Not OK",
+                    "name": "Rollback Sync",
                     "dependsOnList": [
                         "Parse Result"
                     ],
                     "isLast": 1,
-                    "isTransactional": true,
+                    "isTransactional": false,
                     "actors": [
                         {
-                            "name": "Is Not Valid Zip 1",
+                            "name": "Is Not Valid Zip",
                             "condition": "result",
                             "actorType": {
                                 "parentType": "Not",
@@ -730,7 +899,7 @@
                             }
                         },
                         {
-                            "name": "Rollback",
+                            "name": "Rollback Sync Trx 1",
                             "actorType": {
                                 "parentType": "DbCommand",
                                 "inputs": [
@@ -757,13 +926,85 @@
                     ]
                 },
                 {
-                    "name": "Zip is OK",
+                    "name": "LUI Not Synchronized 6",
                     "dependsOnList": [
-                        "Parse Result"
+                        "LUI Not Synchronized 5"
                     ],
                     "isLast": 1,
-                    "isTransactional": true,
-                    "hasElse": true,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 7",
+                    "dependsOnList": [
+                        "Invalid IID 6"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Commit Sync",
+                    "dependsOnList": [
+                        "Rollback Sync"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "All Zips Were Valid",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Not",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": true,
+                                        "isDefault": true
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Commit Sync Trx",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "commit"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "LUI Not Synchronized 7",
+                    "dependsOnList": [
+                        "LUI Not Synchronized 6"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Invalid IID 8",
+                    "dependsOnList": [
+                        "Invalid IID 7"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
                     "actors": []
                 }
             ]
@@ -923,7 +1164,17 @@
                 "name": "result"
             },
             "rightPort": {
-                "actor": "Is Not Valid Zip 1",
+                "actor": "Is Not Valid Zip",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Is Not Valid Zip",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "All Zips Were Valid",
                 "name": "value"
             }
         },
