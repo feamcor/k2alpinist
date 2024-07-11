@@ -115,7 +115,7 @@
                         "Input Parameters"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "Check IID",
@@ -146,23 +146,6 @@
                                         }
                                     }
                                 ]
-                            }
-                        },
-                        {
-                            "name": "Begin Sync Trx",
-                            "actorType": {
-                                "parentType": "DbCommand",
-                                "inputs": [
-                                    {
-                                        "name": "interface",
-                                        "const": "fabric"
-                                    },
-                                    {
-                                        "name": "sql",
-                                        "const": "begin"
-                                    }
-                                ],
-                                "outputs": []
                             }
                         },
                         {
@@ -205,7 +188,7 @@
                         "Get Customer"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "LUI Was Synchronized",
@@ -289,25 +272,8 @@
                     "isLast": 0,
                     "isTransactional": false,
                     "hasElse": true,
-                    "actors": [
-                        {
-                            "name": "Rollback Sync Trx 2",
-                            "actorType": {
-                                "parentType": "DbCommand",
-                                "inputs": [
-                                    {
-                                        "name": "interface",
-                                        "const": "fabric"
-                                    },
-                                    {
-                                        "name": "sql",
-                                        "const": "rollback"
-                                    }
-                                ],
-                                "outputs": []
-                            }
-                        }
-                    ]
+                    "remark": "If LUI was not synchronized, this stage anyway will call commit, as the first non-transaction stage. There is no harm on this commit for nothing.",
+                    "actors": []
                 },
                 {
                     "name": "Invalid IID 1",
@@ -328,7 +294,7 @@
                         "Get Addresses"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "Prompt",
@@ -394,7 +360,7 @@
                         "Build Prompt"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "System Message",
@@ -506,7 +472,7 @@
                         "Build Messages"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "Payload",
@@ -636,7 +602,7 @@
                         "Build Payload"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "API",
@@ -821,7 +787,7 @@
                         "Call API"
                     ],
                     "isLast": 0,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "Result",
@@ -887,7 +853,7 @@
                         "Parse Result"
                     ],
                     "isLast": 1,
-                    "isTransactional": false,
+                    "isTransactional": true,
                     "actors": [
                         {
                             "name": "Is Not Valid Zip",
@@ -956,32 +922,27 @@
                     "isTransactional": false,
                     "actors": [
                         {
-                            "name": "All Zips Were Valid",
-                            "condition": "result",
+                            "name": "Suppress Error",
+                            "remark": "This is the first non-transaction stage and where Broadway will automatically emit a commit. If transaction was previously rolled back, then it would throw an exception. The exception is catched and suppressed. Otherwise, commit won't fail.",
+                            "onError": "result",
                             "actorType": {
-                                "parentType": "Not",
+                                "parentType": "ErrorHandler",
                                 "inputs": [
                                     {
-                                        "name": "value",
-                                        "const": true,
-                                        "isDefault": true
-                                    }
-                                ],
-                                "outputs": []
-                            }
-                        },
-                        {
-                            "name": "Commit Sync Trx",
-                            "actorType": {
-                                "parentType": "DbCommand",
-                                "inputs": [
-                                    {
-                                        "name": "interface",
-                                        "const": "fabric"
-                                    },
-                                    {
-                                        "name": "sql",
-                                        "const": "commit"
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": "commit cannot be executed outside a transaction"
+                                                },
+                                                "actions": {
+                                                    "suppress": true,
+                                                    "log": false,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
                                     }
                                 ],
                                 "outputs": []
@@ -1165,16 +1126,6 @@
             },
             "rightPort": {
                 "actor": "Is Not Valid Zip",
-                "name": "value"
-            }
-        },
-        {
-            "leftPort": {
-                "actor": "Is Not Valid Zip",
-                "name": "result"
-            },
-            "rightPort": {
-                "actor": "All Zips Were Valid",
                 "name": "value"
             }
         },
