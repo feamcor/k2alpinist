@@ -3,7 +3,7 @@
   <Name>vdb</Name>
   <RootView>customer</RootView>
   <CacheLocationType>Default</CacheLocationType>
-  <LuLazyDataUpdate syncMethod="None" performEvery="1.00:00:00" syncTimeout="0">
+  <LuLazyDataUpdate syncMethod="TimeInterval" performEvery="0.00:00:00" syncTimeout="30">
   	<DecisionFunction></DecisionFunction>
   </LuLazyDataUpdate>
   <EventsList>
@@ -38,7 +38,8 @@
     </TableProperties>
 	 <TableProperties name="case_note">
       <Populations>
-        <Population name="population.flow" order="4" disabled="false" populationType="FLOW" />
+        <Population name="population.flow" order="4" disabled="true" populationType="FLOW" />
+        <Population name="gen100k.flow" order="4" disabled="false" populationType="Flow" />
       </Populations>
     </TableProperties>
 	 <TableProperties name="address">
@@ -77,6 +78,10 @@
 	  <Relation>
         <From tableType="TableObject" table="cases" column="case_id" columnId="case_id" />
         <To tableType="TableObject" table="case_note" populationObjectName="population.flow" column="case_id" columnId="case_id" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="cases" column="case_id" columnId="case_id" />
+        <To tableType="TableObject" table="case_note" populationObjectName="gen100k.flow" column="case_id" columnId="case_id" />
       </Relation>
   </DatabaseRelations>
   <DiagramGraph>

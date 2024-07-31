@@ -1,0 +1,310 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Initialization",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Iterations",
+                            "minHeight": 131,
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "const": 50,
+                                        "isDefault": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "IID",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "215",
+                                        "isDefault": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Iterations++",
+                            "actorType": {
+                                "parentType": "MathAdd",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "const": 1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Iteration",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Iterator",
+                            "actorType": {
+                                "parentType": "ForLoop",
+                                "inputs": [
+                                    {
+                                        "name": "from",
+                                        "const": 1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Print Counter",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Async Get",
+                            "minHeight": 212,
+                            "actorType": {
+                                "parentType": "InnerFlowAsync",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "getCustomer"
+                                    },
+                                    {
+                                        "name": "threadCount",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "iteration",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "iid",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "results",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Wait",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "Sleep",
+                            "actorType": {
+                                "parentType": "Sleep",
+                                "inputs": [
+                                    {
+                                        "name": "millis",
+                                        "const": 250,
+                                        "isDefault": true
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Finalization",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "When All Done",
+                            "actorType": {
+                                "parentType": "InnerFlowJoin",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Iterations",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Async Get",
+                "name": "threadCount"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Iterations",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Iterations++",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IID",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Async Get",
+                "name": "iid"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Iterations++",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Iterator",
+                "name": "to"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Iterator",
+                "name": "i"
+            },
+            "rightPort": {
+                "actor": "Async Get",
+                "name": "iteration"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Async Get",
+                "name": "remaining"
+            },
+            "rightPort": {
+                "actor": "When All Done",
+                "name": "remaining"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Async Get",
+                "name": "failures"
+            },
+            "rightPort": {
+                "actor": "When All Done",
+                "name": "failures"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "iterations"
+            },
+            "rightPort": {
+                "actor": "Iterations",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "iid"
+            },
+            "rightPort": {
+                "actor": "IID",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sleep_ms"
+            },
+            "rightPort": {
+                "actor": "Sleep",
+                "name": "millis"
+            }
+        }
+    ]
+}
