@@ -71,10 +71,6 @@
                                     {
                                         "name": "luType",
                                         "const": "Customer"
-                                    },
-                                    {
-                                        "name": "syncMode",
-                                        "const": "FORCE"
                                     }
                                 ],
                                 "outputs": []
