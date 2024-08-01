@@ -3,7 +3,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 1",
+                    "name": "Initialization",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
@@ -112,7 +112,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 7",
+                    "name": "Adjust for Iteration",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
@@ -137,7 +137,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 5",
+                    "name": "Iteration",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
@@ -162,7 +162,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 2",
+                    "name": "Synthesize 1",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
@@ -190,7 +190,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 4",
+                    "name": "Synthesize 2",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
@@ -253,7 +253,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 3",
+                    "name": "Build Note",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
@@ -322,7 +322,7 @@
         {
             "stages": [
                 {
-                    "name": "Stage 6",
+                    "name": "Add Note",
                     "dependsOnList": [],
                     "isLast": 0,
                     "actors": [
