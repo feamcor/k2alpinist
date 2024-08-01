@@ -32,6 +32,14 @@
                             }
                         },
                         {
+                            "name": "Fabric Session ID",
+                            "actorType": {
+                                "parentType": "RandomUUID",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
                             "name": "IID",
                             "actorType": {
                                 "parentType": "Const",
@@ -63,14 +71,26 @@
                     "isLast": 0,
                     "actors": [
                         {
-                            "name": "Get Customer",
-                            "minHeight": 132,
+                            "name": "Fabric Session",
+                            "minHeight": 134,
                             "actorType": {
-                                "parentType": "FabricGet",
+                                "parentType": "OpenFabricSession",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Get Customer",
+                            "actorType": {
+                                "parentType": "DbCommand",
                                 "inputs": [
                                     {
-                                        "name": "luType",
-                                        "const": "Customer"
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "get Customer.?"
                                     }
                                 ],
                                 "outputs": []
@@ -89,7 +109,7 @@
                     "actors": [
                         {
                             "name": "Count Notes",
-                            "minHeight": 213,
+                            "minHeight": 306,
                             "actorType": {
                                 "parentType": "DbCommand",
                                 "inputs": [
@@ -147,6 +167,19 @@
                                 ],
                                 "outputs": []
                             }
+                        },
+                        {
+                            "name": "Release Scope",
+                            "actorType": {
+                                "parentType": "FabricRelease",
+                                "inputs": [
+                                    {
+                                        "name": "luType",
+                                        "const": "Customer"
+                                    }
+                                ],
+                                "outputs": []
+                            }
                         }
                     ]
                 }
@@ -167,27 +200,34 @@
         },
         {
             "leftPort": {
+                "actor": "Fabric Session ID",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Fabric Session",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Fabric Session ID",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get Customer",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
                 "actor": "IID",
                 "name": "value"
             },
             "rightPort": {
                 "actor": "Get Customer",
-                "name": "iid"
-            }
-        },
-        {
-            "leftPort": {
-                "actor": "Get Customer",
-                "name": "result"
-            },
-            "rightPort": {
-                "actor": "Log",
                 "name": "params"
             },
-            "path": [
-                "version"
-            ],
-            "arrayPosition": 1
+            "arrayPosition": 0
         },
         {
             "leftPort": {
