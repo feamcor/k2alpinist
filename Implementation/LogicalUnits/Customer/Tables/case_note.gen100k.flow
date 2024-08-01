@@ -82,6 +82,7 @@
                     "actors": [
                         {
                             "name": "Notes Generator",
+                            "minHeight": 321,
                             "actorType": {
                                 "parentType": "RowsGenerator",
                                 "inputs": [
@@ -141,6 +142,14 @@
                                         }
                                     }
                                 ]
+                            }
+                        },
+                        {
+                            "name": "Count Cases",
+                            "actorType": {
+                                "parentType": "Count",
+                                "inputs": [],
+                                "outputs": []
                             }
                         }
                     ]
@@ -207,6 +216,15 @@
                                 ],
                                 "outputs": []
                             }
+                        },
+                        {
+                            "name": "Count Notes",
+                            "minHeight": 243,
+                            "actorType": {
+                                "parentType": "Count",
+                                "inputs": [],
+                                "outputs": []
+                            }
                         }
                     ]
                 }
@@ -218,7 +236,26 @@
                     "name": "Post Load",
                     "dependsOnList": [],
                     "isLast": 0,
-                    "actors": []
+                    "actors": [
+                        {
+                            "name": "Log Counters",
+                            "minHeight": 352,
+                            "actorType": {
+                                "parentType": "Logger",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "#${0} case_id=${1} notes=${2}"
+                                    },
+                                    {
+                                        "name": "level",
+                                        "const": "info"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
                 }
             ]
         }
@@ -231,7 +268,7 @@
             },
             "rightPort": {
                 "actor": "Notes Generator",
-                "name": "parent_rows"
+                "name": "parent_row"
             },
             "iterate": "Iterate"
         },
@@ -245,6 +282,42 @@
                 "name": "params"
             },
             "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Notes Generator",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Log Counters",
+                "name": "params"
+            },
+            "path": [
+                "case_id"
+            ],
+            "arrayPosition": 1
+        },
+        {
+            "leftPort": {
+                "actor": "Count Cases",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Log Counters",
+                "name": "params"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "Count Notes",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Log Counters",
+                "name": "params"
+            },
+            "arrayPosition": 2
         },
         {
             "leftPort": {
