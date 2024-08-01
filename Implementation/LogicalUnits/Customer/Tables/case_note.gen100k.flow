@@ -99,7 +99,14 @@
                                     },
                                     {
                                         "name": "parent_row",
-                                        "schema": {},
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "case_id": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
                                         "mandatory": false
                                     },
                                     {
@@ -268,20 +275,8 @@
             },
             "rightPort": {
                 "actor": "Notes Generator",
-                "name": "parent_row"
-            },
-            "iterate": "Iterate"
-        },
-        {
-            "leftPort": {
-                "actor": "Notes Generator",
-                "name": "result"
-            },
-            "rightPort": {
-                "actor": "case_note",
-                "name": "params"
-            },
-            "iterate": "Iterate"
+                "name": "parent_rows"
+            }
         },
         {
             "leftPort": {
@@ -296,6 +291,62 @@
                 "case_id"
             ],
             "arrayPosition": 1
+        },
+        {
+            "leftPort": {
+                "actor": "Notes Generator",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "case_note",
+                "name": "case_id"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "case_id"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Notes Generator",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "case_note",
+                "name": "note_id"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "note_id"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Notes Generator",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "case_note",
+                "name": "note_date"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "note_date"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Notes Generator",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "case_note",
+                "name": "note_text"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "note_text"
+            ]
         },
         {
             "leftPort": {

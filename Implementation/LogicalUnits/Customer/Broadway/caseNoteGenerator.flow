@@ -21,7 +21,12 @@
                                     {
                                         "name": "value",
                                         "schema": {
-                                            "type": "integer"
+                                            "type": "object",
+                                            "properties": {
+                                                "case_id": {
+                                                    "type": "integer"
+                                                }
+                                            }
                                         }
                                     }
                                 ]
@@ -142,6 +147,29 @@
                     "isLast": 0,
                     "actors": [
                         {
+                            "name": "Case ID",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "name": "Iterator",
                             "minHeight": 196,
                             "actorType": {
@@ -167,16 +195,8 @@
                     "isLast": 0,
                     "actors": [
                         {
-                            "name": "Note Date",
-                            "actorType": {
-                                "parentType": "Now",
-                                "inputs": [],
-                                "outputs": []
-                            }
-                        },
-                        {
                             "name": "UUID",
-                            "minHeight": 336,
+                            "minHeight": 357,
                             "actorType": {
                                 "parentType": "RandomUUID",
                                 "inputs": [],
@@ -196,7 +216,7 @@
                     "actors": [
                         {
                             "name": "Cantor Pair",
-                            "minHeight": 187,
+                            "minHeight": 144,
                             "actorType": {
                                 "parentType": "JavaScript",
                                 "inputs": [
@@ -233,8 +253,15 @@
                             }
                         },
                         {
+                            "name": "Note Date",
+                            "actorType": {
+                                "parentType": "Now",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
                             "name": "Note",
-                            "minHeight": 236,
                             "actorType": {
                                 "parentType": "StringFormat",
                                 "inputs": [
@@ -370,19 +397,12 @@
                 "name": "value"
             },
             "rightPort": {
-                "actor": "Generated Note",
-                "name": "case_id"
-            }
-        },
-        {
-            "leftPort": {
-                "actor": "Parent Row",
+                "actor": "Case ID",
                 "name": "value"
             },
-            "rightPort": {
-                "actor": "Cantor Pair",
-                "name": "a"
-            }
+            "path": [
+                "case_id"
+            ]
         },
         {
             "leftPort": {
@@ -402,6 +422,26 @@
             "rightPort": {
                 "actor": "Iterator",
                 "name": "to"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Case ID",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Cantor Pair",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Case ID",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Generated Note",
+                "name": "case_id"
             }
         },
         {
@@ -429,16 +469,6 @@
         },
         {
             "leftPort": {
-                "actor": "Note Date",
-                "name": "date"
-            },
-            "rightPort": {
-                "actor": "Generated Note",
-                "name": "note_date"
-            }
-        },
-        {
-            "leftPort": {
                 "actor": "UUID",
                 "name": "value"
             },
@@ -456,6 +486,16 @@
             "rightPort": {
                 "actor": "Generated Note",
                 "name": "note_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Note Date",
+                "name": "date"
+            },
+            "rightPort": {
+                "actor": "Generated Note",
+                "name": "note_date"
             }
         },
         {
