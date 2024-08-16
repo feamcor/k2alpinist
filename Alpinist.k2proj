@@ -2,6 +2,7 @@
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>Alpinist</Name>
   <ProductVersion>7.2.2_124</ProductVersion>
+  <ProjectVersion>0.2.0</ProjectVersion>
   <Mdm>false</Mdm>
   <DataChangeIndicators>
     <DataChange name="Search" enabled="true">
