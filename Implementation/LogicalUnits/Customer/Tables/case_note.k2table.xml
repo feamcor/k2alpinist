@@ -2,6 +2,8 @@
 <TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>case_note</Name>
   <ID>tbl_case_note</ID>
+  <ColumnsCollation>BINARY</ColumnsCollation>
+  <FullTextSearch>false</FullTextSearch>
   <Columns>
     <Column name="case_id" id="case_id" index="0" datatype="INTEGER" />
     <Column name="note_id" id="note_id" index="1" datatype="INTEGER" mandatory="true" />
@@ -13,8 +15,8 @@
   </IndexesList>
   <EnrichmentList>
   </EnrichmentList>
-  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
-    <DecisionFunction></DecisionFunction>
+  <LazyDataUpdate syncMethod="DecisionFunction" performEvery="1.00:00:00">
+    <DecisionFunction>syncFirstOrForced</DecisionFunction>
   </LazyDataUpdate>
   <TriggersList>
   </TriggersList>

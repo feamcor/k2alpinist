@@ -33,7 +33,40 @@ public class SharedLogic {
 	public static Object loadFromLUResource(String path) throws Exception {
 		return loadResource(path);
 	}
-	
-	
+
+    private static final String LOG_SYNC_FIRST_OR_FORCED = "syncFirstOrForced:{}[{}]:{}:{}: {}";
+
+	@desc("This function indicates if current table must be sync'd on first sync, or when explicitly forced via session global.")
+    @type(DecisionFunction)
+    @out(name = "decision", type = Boolean.class, desc = "")
+    public static Boolean syncFirstOrForced() throws Exception {
+        final String lut = UserCode.getLuType().luName;
+        final String iid = UserCode.getInstanceID();
+        final String tableName = UserCode.getTableName();
+        final String syncMode = UserCode.getSyncMode();
+        if (SyncMode.OFF.toString().equals(syncMode)) {
+            log.info(LOG_SYNC_FIRST_OR_FORCED, lut, iid, tableName, syncMode, "returned FALSE due to sync OFF");
+            return Boolean.FALSE;
+        }
+        if (SyncMode.FORCE.toString().equals(syncMode)) {
+            log.info(LOG_SYNC_FIRST_OR_FORCED, lut, iid, tableName, syncMode, "returned TRUE due to sync FORCE");
+            return Boolean.TRUE;
+        }
+        if (UserCode.isFirstSync()) {
+            log.info(LOG_SYNC_FIRST_OR_FORCED, lut, iid, tableName, syncMode, "returned TRUE due to first sync");
+            return Boolean.TRUE;
+        }
+        if (UserCode.isStructureChanged()) {
+            log.info(LOG_SYNC_FIRST_OR_FORCED, lut, iid, tableName, syncMode, "returned TRUE due to structure change");
+            return Boolean.TRUE;
+        }
+        Object sessionGlobal = fabric().fetch("set ?", String.format("%s__%s", lut, tableName)).firstValue();
+        if (sessionGlobal == null) {
+            log.info(LOG_SYNC_FIRST_OR_FORCED, lut, iid, tableName, syncMode, "returned FALSE due to no session global");
+            return Boolean.FALSE;
+        }
+        log.info(LOG_SYNC_FIRST_OR_FORCED, lut, iid, tableName, syncMode, "returned TRUE due to session global");
+        return Boolean.TRUE;
+    }
 
 }
