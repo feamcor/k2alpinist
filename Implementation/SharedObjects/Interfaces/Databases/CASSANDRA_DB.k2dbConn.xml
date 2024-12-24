@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DBConn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="DBConnGenericAdoJdbc" name="CASSANDRA_DB" type="genericdb" version="8.0.0">
+<DBConn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="DBConnGenericAdoJdbc" name="CASSANDRA_DB" type="genericdb" version="8.1.0">
     <JdbcDriverName>Cassandra</JdbcDriverName>
     <Active>true</Active>
     <ConnectionProperties></ConnectionProperties>
-    <ConnectionStringServerSide>jdbc:cassandra://dev-cassandra-service:9042/?consistency=QUORUM&amp;internodesssl=false</ConnectionStringServerSide>
+    <ConnectionStringServerSide>jdbc:cassandra://cassandra:9042/?consistency=QUORUM&amp;internodesssl=false</ConnectionStringServerSide>
     <PortNum>9042</PortNum>
     <IsCustomConnectionStringServerSide>false</IsCustomConnectionStringServerSide>
     <MinConnectionsNumber>0</MinConnectionsNumber>
@@ -11,7 +11,7 @@
     <UseSelectAsteriskInAutoCreatedQueries>true</UseSelectAsteriskInAutoCreatedQueries>
     <AutomaticMetadataLoading>false</AutomaticMetadataLoading>
     <OfflineMode>true</OfflineMode>
-    <DataSource>dev-cassandra-service</DataSource>
+    <DataSource>cassandra</DataSource>
     <UserId>cassandra</UserId>
     <Password>~encs2~+9G/2dejfnD0vZr+GPIC5T64ITbyoVKc3LAS1q9vI4JG24rXB3ZgM4c=</Password>
     <DataBase></DataBase>
